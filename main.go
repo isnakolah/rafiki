@@ -5,13 +5,15 @@ import (
 	"fmt"
 	"github.com/gin-gonic/gin"
 	cors "github.com/rs/cors/wrapper/gin"
+	"github.com/rs/zerolog"
 	"github.com/rs/zerolog/log"
 	"net/http"
 	"os"
 	"os/signal"
+	"rafiki/data/repo"
 	"rafiki/health"
 	. "rafiki/settings"
-	"recoin-notification-service/data/repo"
+	"strings"
 	"syscall"
 	"time"
 )
@@ -49,6 +51,25 @@ func setupRouter() *gin.Engine {
 }
 
 func main() {
+
+	// logs will write with UNIX time
+	zerolog.TimeFieldFormat = zerolog.TimeFormatUnix
+	log.Logger = log.Output(zerolog.ConsoleWriter{Out: os.Stderr})
+	output := zerolog.ConsoleWriter{Out: os.Stdout, TimeFormat: time.RFC3339}
+	output.FormatLevel = func(i interface{}) string {
+		return strings.ToUpper(fmt.Sprintf("| %-6s|", i))
+	}
+	output.FormatMessage = func(i interface{}) string {
+		return fmt.Sprintf("***%s****", i)
+	}
+	output.FormatFieldName = func(i interface{}) string {
+		return fmt.Sprintf("%s:", i)
+	}
+	output.FormatFieldValue = func(i interface{}) string {
+		return strings.ToUpper(fmt.Sprintf("%s", i))
+	}
+
+	logger := zerolog.New(output).With().Timestamp().Logger()
 
 	router := setupRouter()
 
