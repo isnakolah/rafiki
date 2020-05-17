@@ -140,17 +140,17 @@ func getPort() string {
 	port := os.Getenv("PORT")
 	if GetEnv() == "DEMO" {
 		if port == "" {
-			port = "4003"
+			port = "8080"
 			log.Print("no DEMO PORT environment variable detected. Setting port to ", port)
 		}
 	} else if GetEnv() == "STAGING" {
 		if port == "" {
-			port = "4003"
+			port = "8080"
 			log.Print("no STAGING PORT environment variable detected. Setting port to ", port)
 		}
 	} else if GetEnv() == "PRODUCTION" {
 		if port == "" {
-			port = "4003"
+			port = "8080"
 			log.Print("no PRODUCTION PORT environment variable detected. Setting port to ", port)
 		}
 	}
