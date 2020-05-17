@@ -119,7 +119,7 @@ func main() {
 
 	router.POST("/api/v1/message/send", repo.SendMessageHandler)
 
-	router.GET("/api/v1/message/send/:message_id", repo.FetchMessageHandler)
+	router.GET("/api/v1/message/send/:user_id", repo.FetchMessageHandler)
 
 	router.GET("/api/v1/message/send", repo.FetchAllMessagesHandler)
 

@@ -70,8 +70,8 @@ func FetchMessageHandler(c *gin.Context) {
 
 	database := c.MustGet("database").(*gorm.DB)
 
-	var message Message
-	if err := database.Where("message_id = ?", c.Param("message_id")).First(&message).Error; err != nil {
+	var message []Message
+	if err := database.Where("user_id = ?", c.Param("user_id")).Find(&message).Error; err != nil {
 		c.JSON(http.StatusBadRequest, gin.H{"error": "Record not found!"})
 		return
 	}
