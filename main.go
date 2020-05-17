@@ -1,10 +1,16 @@
 package main
 
 import (
-	"log"
+	"context"
+	"fmt"
+	"github.com/gin-gonic/gin"
+	cors "github.com/rs/cors/wrapper/gin"
+	"github.com/rs/zerolog/log"
 	"net/http"
 	"os"
 	"os/signal"
+	"rafiki/health"
+	. "rafiki/settings"
 	"recoin-notification-service/data/repo"
 	"syscall"
 	"time"
@@ -111,17 +117,17 @@ func main() {
 
 func getPort() string {
 	port := os.Getenv("PORT")
-	if settings.GetEnv() == "DEMO" {
+	if GetEnv() == "DEMO" {
 		if port == "" {
 			port = "4003"
 			log.Print("no DEMO PORT environment variable detected. Setting port to ", port)
 		}
-	} else if settings.GetEnv() == "STAGING" {
+	} else if GetEnv() == "STAGING" {
 		if port == "" {
 			port = "4003"
 			log.Print("no STAGING PORT environment variable detected. Setting port to ", port)
 		}
-	} else if settings.GetEnv() == "PRODUCTION" {
+	} else if GetEnv() == "PRODUCTION" {
 		if port == "" {
 			port = "4003"
 			log.Print("no PRODUCTION PORT environment variable detected. Setting port to ", port)
