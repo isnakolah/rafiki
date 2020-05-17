@@ -23,7 +23,7 @@ func GetDatabaseName() string {
 
 	name := os.Getenv("DATABASE_NAME")
 	if name == "" {
-		name = "recoin-notification"
+		name = "rafiki"
 	}
 	return name
 }
@@ -49,7 +49,7 @@ func GetDatabasePassword() string {
 func GetAfricasTalkingUsername() string {
 	env := os.Getenv("AT_USERNAME")
 	if env == "" {
-		env = "recoin"
+		env = "rafiki_app"
 	}
 	return env
 }
@@ -57,7 +57,7 @@ func GetAfricasTalkingUsername() string {
 func GetAfricasTalkingKey() string {
 	env := os.Getenv("AT_KEY")
 	if env == "" {
-		env = "4ca8b2e12a068378cb47ae617868f2d7bcea7bc066ac2ccc739caa8bd93939bd"
+		env = "76a7d052969a47ff266a6a733c7db65fb86889b724f4173bf9f188f0239a23a2"
 	}
 	return env
 }

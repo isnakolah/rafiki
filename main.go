@@ -10,7 +10,9 @@ import (
 	"net/http"
 	"os"
 	"os/signal"
+	"rafiki/data/model"
 	"rafiki/data/repo"
+	"rafiki/database"
 	"rafiki/health"
 	. "rafiki/settings"
 	"strings"
@@ -71,7 +73,31 @@ func main() {
 
 	logger := zerolog.New(output).With().Timestamp().Logger()
 
+	// Creates a db connection and handles closing it again before exit.
+	db, err := database.CreateConnection()
+	defer db.Close()
+
+	// Only logger on Dev and Staging Environments! Disable on Production
+	if GetEnv() == "PRODUCTION" {
+		db.LogMode(false)
+	} else {
+		db.LogMode(true)
+	}
+
+	if err != nil {
+		logger.Fatal().Err(err).Msgf("Could not connect to DB: %v", err)
+	}
+
+	// Trigger Migrations on Database Connection
+	db.AutoMigrate(&model.Message{})
+
 	router := setupRouter()
+
+	// Provide db variable to controllers
+	router.Use(func(c *gin.Context) {
+		c.Set("database", db)
+		c.Next()
+	})
 
 	// -----------------------------------------------------------------------------------------------------------------
 	// ROOT API ENDPOINT
